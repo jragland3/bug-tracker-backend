@@ -4,8 +4,15 @@
   "type": "module",
   "private": true,
   "devDependencies": {
+    "@eslint/js": "^9.33.0",
     "@types/bun": "latest",
-    "bun-types": "^1.2.20"
+    "@typescript-eslint/eslint-plugin": "^8.39.1",
+    "@typescript-eslint/parser": "^8.39.1",
+    "bun-types": "^1.2.20",
+    "eslint": "^9.33.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react": "^7.37.5",
+    "prettier": "^3.6.2"
   },
   "peerDependencies": {
     "typescript": "^5"
@@ -20,7 +27,8 @@
     "test:unit": "bun --env-file=.env.test test",
     "test:prepare": "bunx prisma migrate reset --force && bunx prisma generate",
     "test:all": "bunx test:prepare && bunx test:unit",
-    "reset:dev-db": "bunx prisma migrate reset --force"
+    "reset:dev-db": "bunx prisma migrate reset --force",
+    "lint": "bunx eslint ."
   },
   "prisma": {
     "seed": "bun run prisma/seed.ts"
