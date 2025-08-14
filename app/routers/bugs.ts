@@ -8,8 +8,9 @@ export const bugRouter = router({
   }),
   createBug: procedure
     .input(z.object({
-      title: z.string().min(1),
-      status: z.string(),
+      title: z.string().trim().min(1),
+      description: z.string().trim().optional(),
+      status: z.string().trim(),
     }))
     .mutation(async ({ input }) => {
       return prisma.bug.create({ data: input })
