@@ -1,0 +1,27 @@
+{
+  "name": "bug-tracker-backend",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.14.0",
+    "@trpc/server": "^11.4.4",
+    "zod": "^4.0.17"
+  },
+  "scripts": {
+    "test": "bun test",
+    "test:unit": "bun --env-file=.env.test test",
+    "test:prepare": "bunx prisma migrate reset --force && bunx prisma generate",
+    "test:all": "bunx test:prepare && bunx test:unit",
+    "reset:dev-db": "bunx prisma migrate reset --force"
+  },
+  "prisma": {
+    "seed": "bun run prisma/seed.ts"
+  }
+}
