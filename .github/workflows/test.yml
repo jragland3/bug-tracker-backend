@@ -1,0 +1,36 @@
+name: Tests
+
+on:
+  push:
+    paths:
+      - "**/*.ts"
+      - "**/*.tsx"
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Generate Prisma Client
+        run: bunx prisma generate
+        env:
+          DATABASE_URL: "file:./test.db"
+
+      - name: Reset DB and apply schema
+        run: bunx prisma migrate reset --force --skip-seed
+        env:
+          DATABASE_URL: "file:./test.db"
+
+      - name: Run tests
+        run: bun test
+        env:
+          DATABASE_URL: "file:./test.db"

@@ -1,5 +1,5 @@
-import { router, procedure } from "../_app";
-import { prisma } from "../prismaClient";
+import { router, procedure } from "./_app";
+import { prisma } from "../../prismaClient";
 import { z } from 'zod';
 
 export const bugRouter = router({

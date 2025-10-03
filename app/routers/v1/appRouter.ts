@@ -1,5 +1,5 @@
 import { router } from './_app';
-import { bugRouter } from './routers/bugs';
+import { bugRouter } from './bugs';
 
 export const appRouter = router({
   bugs: bugRouter,
