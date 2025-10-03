@@ -1,17 +1,17 @@
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch';
-import { appRouter } from './appRouter';
+import { appRouter } from './routers/v1/appRouter';
 
 Bun.serve({
   port: 3000,
   async fetch(req) {
     const url = new URL(req.url);
 
-    if (url.pathname.startsWith('/trpc')) {
+    if (url.pathname.startsWith('/v1/trpc')) {
       return fetchRequestHandler({
         req,
         router: appRouter,
         createContext: () => ({}),
-        endpoint: '/trpc',
+        endpoint: '/v1/trpc',
       });
     }
 
