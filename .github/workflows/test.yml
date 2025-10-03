@@ -22,9 +22,13 @@ jobs:
 
       - name: Generate Prisma Client
         run: bunx prisma generate
+        env:
+          DATABASE_URL: "file:./test.db"
 
-      - name: Apply migrations (reset)
-        run: bunx prisma migrate reset --force && bunx prisma generate
+      - name: Reset DB and apply schema
+        run: bunx prisma migrate reset --force --skip-seed
+        env:
+          DATABASE_URL: "file:./test.db"
 
       - name: Run tests
         run: bun test
