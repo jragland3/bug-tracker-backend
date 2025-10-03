@@ -24,7 +24,7 @@ jobs:
         run: bunx prisma generate
 
       - name: Apply migrations (reset)
-        run: bunx prisma migrate reset --force --skip-seed --schema=./prisma/schema.prisma
+        run: bunx prisma migrate reset --force && bunx prisma generate
 
       - name: Run tests
         run: bun test
