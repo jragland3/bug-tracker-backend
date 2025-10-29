@@ -4,7 +4,7 @@ import { z } from 'zod';
 
 export const bugRouter = router({
   getBugs: procedure.query(async () => {
-    return prisma.bug.findMany({ orderBy: { createdAt: 'asc' } });
+    return prisma.bug.findMany({ orderBy: { id: 'asc' } });
   }),
   createBug: procedure
     .input(z.object({
@@ -14,5 +14,13 @@ export const bugRouter = router({
     }))
     .mutation(async ({ input }) => {
       return prisma.bug.create({ data: input })
-    })
+    }),
+  deleteBug: procedure
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ input }) => {
+      const { id } = input;
+      return await prisma.bug.delete({
+        where: { id }
+      });
+    }),
 });
