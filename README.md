@@ -32,3 +32,7 @@ This project was created using `bun init` in bun v1.2.20. [Bun](https://bun.com)
 ### To run a test script (from package.json):
 `bun --env-file=.env.test test:prepare`
 - This sets up `prisma/test.db` and seeds it using `prisma/seed.ts`
+- To run a test file:
+```
+NODE_ENV=test bun test tests/bugs.e2e.spec.ts
+```
