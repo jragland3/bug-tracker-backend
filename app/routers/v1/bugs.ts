@@ -1,6 +1,9 @@
+// tRPC router
+
 import { router, procedure } from "./_app";
 import { prisma } from "../../prismaClient";
 import { z } from 'zod';
+import { Prisma } from "@prisma/client";
 
 export const bugRouter = router({
   getBugs: procedure.query(async () => {
@@ -18,9 +21,13 @@ export const bugRouter = router({
   deleteBug: procedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ input }) => {
-      const { id } = input;
-      return await prisma.bug.delete({
-        where: { id }
-      });
+      try {
+        return await prisma.bug.delete({ where: { id: input.id } });
+      } catch (err:any) {
+        if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2025') {
+          throw new Error(`Bug with provided ID does not exist`);
+        }
+        throw err;
+      }
     }),
 });
