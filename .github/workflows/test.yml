@@ -30,7 +30,33 @@ jobs:
         env:
           DATABASE_URL: "file:./test.db"
 
+      # Start backend server in the background
+      - name: Start backend server
+        run:  |
+          bun run app/server.ts &
+          echo $! > server.pid
+        env:
+          NODE_ENV: test
+          DATABASE_URL: 'file:./test.db'
+        continue-on-error: false
+
+      # Wait for the server to respond on port 3000
+      - name: Waif for API to be ready
+        run: |
+          for i in {1..15}; do
+            if curl -s http://localhost:3000/v1/trpc/bugs.getBugs > /dev/null; then
+              echo 'Server is running'
+              break
+            fi
+            echo ' Waiting for server...'
+            sleep 2
+          done
+
       - name: Run tests
         run: bun test
         env:
           DATABASE_URL: "file:./test.db"
+
+      - name: Stop backend server
+        if: always()
+        run: kill $(cat server.pid) || true
