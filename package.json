@@ -29,7 +29,8 @@
     "test:prepare": "bunx prisma migrate reset --force && bunx prisma generate",
     "test:all": "bunx test:prepare && bunx test:unit",
     "reset:dev-db": "bunx prisma migrate reset --force",
-    "lint": "bunx eslint ."
+    "lint": "bunx eslint .",
+    "start:e2e": "bun run app/server.ts"
   },
   "prisma": {
     "seed": "bun run prisma/seed.ts"
