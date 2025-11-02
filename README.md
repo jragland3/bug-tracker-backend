@@ -12,6 +12,11 @@ To run:
 bun run app/server.ts
 ```
 
+To run using the test database:
+```bash
+DATABASE_URL="file:./test.db" bun run app/server.ts
+```
+
 This project was created using `bun init` in bun v1.2.20. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
 
 # Prisma setup
@@ -33,6 +38,6 @@ This project was created using `bun init` in bun v1.2.20. [Bun](https://bun.com)
 `bun --env-file=.env.test test:prepare`
 - This sets up `prisma/test.db` and seeds it using `prisma/seed.ts`
 - To run a test file:
-```
+```bash
 NODE_ENV=test bun test tests/bugs.e2e.spec.ts
 ```
