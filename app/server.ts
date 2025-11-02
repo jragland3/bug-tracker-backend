@@ -34,6 +34,16 @@ Bun.serve({
           'Access-Control-Allow-Origin': allowedOrigin,
         }
       })
+    };
+
+
+    if (url.pathname === '/health') {
+      return new Response('ok', {
+        status: 200,
+        headers: {
+          'Access-Control-Allow-Origin': allowedOrigin,
+        },
+      });
     }
 
     return new Response('Not Found', { status: 404 });
