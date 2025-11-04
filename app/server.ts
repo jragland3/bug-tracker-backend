@@ -15,9 +15,9 @@ Bun.serve({
           'Access-Control-Allow-Origin': allowedOrigin,
           'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
           'Access-Control-Allow-Headers': 'Content-Type'
-        }
-      })
-    }
+        },
+      });
+    };
 
     if (url.pathname.startsWith('/v1/trpc')) {
       const res = await fetchRequestHandler({
@@ -32,8 +32,8 @@ Bun.serve({
         headers: {
           ...Object.fromEntries(res.headers),
           'Access-Control-Allow-Origin': allowedOrigin,
-        }
-      })
+        },
+      });
     };
 
 
@@ -44,7 +44,7 @@ Bun.serve({
           'Access-Control-Allow-Origin': allowedOrigin,
         },
       });
-    }
+    };
 
     return new Response('Not Found', { status: 404 });
   },
