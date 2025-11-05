@@ -41,7 +41,7 @@ jobs:
         continue-on-error: false
 
       # Wait for the server to respond on port 3000
-      - name: Waif for API to be ready
+      - name: Wait for API to be ready
         run: |
           for i in {1..15}; do
             if curl -s http://localhost:3000/v1/trpc/bugs.getBugs > /dev/null; then
