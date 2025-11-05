@@ -25,7 +25,7 @@ export const bugRouter = router({
       try {
         return await prisma.bug.delete({ where: { id: input.id } });
       } catch (err:any) {
-        if (err instanceof PrismaClientKnownRequestError && err.code === 'P2025') {
+        if (err.code === 'P2025') {
           throw new TRPCError({
             code: 'NOT_FOUND',
             message: `Bug with provided ID does not exist`
