@@ -30,7 +30,7 @@ describe('bugRouter tRPC tests', () => {
       caller.createBug({title:'Bug2', status:'Active'}),
     ]);
 
-    const bugs = (await caller.getBugs()).map(bug => ({
+    const bugs = (await caller.getBugs()).map((bug: any) => ({
       ...bug,
       createdAt: bug.createdAt.toISOString(),
     }));
