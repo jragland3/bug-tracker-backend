@@ -104,7 +104,7 @@ describe('BugRouter E2E API tests', () => {
       error?: { message: string },
     };
 
-    expect(res.status).toBe(500);
+    expect(res.status).toBe(404);
     expect(json.error?.message).toContain('Bug with provided ID does not exist')
   })
 });
