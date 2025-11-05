@@ -3,7 +3,6 @@
 import { router, procedure } from "./_app";
 import { prisma } from "../../prismaClient";
 import { z } from 'zod';
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { TRPCError } from "@trpc/server";
 
 export const bugRouter = router({
