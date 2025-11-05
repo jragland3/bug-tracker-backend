@@ -4,6 +4,7 @@ import { router, procedure } from "./_app";
 import { prisma } from "../../prismaClient";
 import { z } from 'zod';
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { TRPCError } from "@trpc/server";
 
 export const bugRouter = router({
   getBugs: procedure.query(async () => {
@@ -25,7 +26,10 @@ export const bugRouter = router({
         return await prisma.bug.delete({ where: { id: input.id } });
       } catch (err:any) {
         if (err instanceof PrismaClientKnownRequestError && err.code === 'P2025') {
-          throw new Error(`Bug with provided ID does not exist`);
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: `Bug with provided ID does not exist`
+          });
         }
         throw err;
       }
