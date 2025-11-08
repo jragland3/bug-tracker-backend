@@ -99,4 +99,51 @@ describe('bugRouter tRPC tests', () => {
       expect(err.message).toContain('Bug with provided ID does not exist');
     }
   });
+
+  // -------------------
+  // updateBug tests
+  // -------------------
+  test('updateBug updates a single field', async () => {
+    const bug = await caller.createBug({ title: 'Original', status: 'Active' });
+
+    const updated = await caller.updateBug({ id: bug.id, title: 'Updated' });
+    expect(updated.id).toBe(bug.id);
+    expect(updated.title).toBe('Updated');
+    expect(updated.status).toBe('Active'); // unchanged
+  });
+
+  test('updateBug updates multiple fields', async () => {
+    const bug = await caller.createBug({ title: 'Multi', status: 'Active', description: 'Desc' });
+
+    const updated = await caller.updateBug({
+      id: bug.id,
+      title: 'New Title',
+      description: 'New Desc',
+      status: 'Resolved',
+    });
+
+    expect(updated.title).toBe('New Title');
+    expect(updated.description).toBe('New Desc');
+    expect(updated.status).toBe('Resolved');
+  });
+
+  test('updateBug throws error when no fields are provided', async () => {
+    const bug = await caller.createBug({ title: 'NoUpdate', status: 'Active' });
+
+    try {
+      await caller.updateBug({ id: bug.id }); // no fields
+      throw new Error('Expected error but none occurred');
+    } catch (err: any) {
+      expect(err.message).toContain('No fields provided to update');
+    }
+  });
+
+  test('updateBug throws error if bug does not exist', async () => {
+    try {
+      await caller.updateBug({ id: 9999, title: 'NonExistent' });
+      throw new Error('Expected error but none occurred');
+    } catch (err: any) {
+      expect(err.message).toContain('No record was found for an update.');
+    }
+  });
 });

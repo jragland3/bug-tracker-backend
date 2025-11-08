@@ -5,6 +5,13 @@ import { prisma } from "../../prismaClient";
 import { z } from 'zod';
 import { TRPCError } from "@trpc/server";
 
+const updateBugInput = z.object({
+  id: z.number(),
+  title: z.string().trim().optional(),
+  description: z.string().trim().optional(),
+  status: z.string().trim().optional(),
+})
+
 export const bugRouter = router({
   getBugs: procedure.query(async () => {
     return prisma.bug.findMany({ orderBy: { id: 'asc' } });
@@ -32,5 +39,20 @@ export const bugRouter = router({
         }
         throw err;
       }
+    }),
+  updateBug: procedure
+    .input(updateBugInput)
+    .mutation(async ({ input }) => {
+      const { id, ...data } = input;
+      
+      if (Object.keys(data).length === 0) {
+        throw new Error('No fields provided to update');
+      }
+      const updatedBug = await prisma.bug.update({
+        where: { id },
+        data
+      });
+
+      return updatedBug;
     }),
 });
