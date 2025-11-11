@@ -91,7 +91,7 @@ describe('BugRouter E2E API tests', () => {
     expect(json.result?.data?.status).toBe(bugStatus);    
   });
 
-  test('createBug throws an error with invalid input (missing title)', async () => {
+  test('createBug returns a validation error when title is missing', async () => {
     const res = await fetch(`${API_URL}/bugs.createBug`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -105,6 +105,55 @@ describe('BugRouter E2E API tests', () => {
 
     expect(res.status).toBe(400);
     expect(json.error?.message).toContain('Invalid input: expected string, received undefined');
+  });
+
+  test('createBug returns a validation error when title is whitespace only', async () => {
+    const res = await fetch(`${API_URL}/bugs.createBug`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title: '   ',
+        description: 'should fail because title is blank after trim',
+        status: 'open',
+      }),
+    });
+
+    const json = await res.json() as TrpcResponse<any[]>;
+    expect(res.status).toBe(400);
+    expect(json.error?.message).toContain('Too small: expected string to have >=1 characters');
+  });
+
+  test('createBug returns validation error when status is missing', async () => {
+    const res = await fetch(`${API_URL}/bugs.createBug`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title: 'Missing status bug',
+        description: 'should fail because of missing status',
+      }),
+    });
+  });
+
+  test('createBug trims whitespace title and description', async () => {
+    const res = await fetch(`${API_URL}/bugs.createBug`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title: '   Trimmed title   ',
+        description: '   Trimmed description   ',
+        status: 'open',
+      }),
+    });
+
+    const json = await res.json() as TrpcResponse<any>;
+    expect(res.status).toBe(200);
+
+    if (!json.result?.data) {
+      throw new Error(`Expected data but got: ${JSON.stringify(json)}`);
+    };
+    const bug = json.result.data;
+    expect(bug.title).toBe('Trimmed title');
+    expect(bug.description).toBe('Trimmed description');
   });
 
   // -------------------
