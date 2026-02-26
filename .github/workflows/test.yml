@@ -21,12 +21,12 @@ jobs:
         run: bun install
 
       - name: Generate Prisma Client
-        run: bunx prisma generate
+        run: npx prisma generate
         env:
           DATABASE_URL: "file:./test.db"
 
       - name: Reset DB and apply schema
-        run: bunx prisma migrate reset --force --skip-seed
+        run: npx prisma migrate reset --force --skip-seed
         env:
           DATABASE_URL: "file:./test.db"
 
