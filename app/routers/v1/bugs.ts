@@ -41,7 +41,12 @@ export const bugRouter = router({
       }
     }),
   updateBug: procedure
-    .input(updateBugInput)
+    .input(z.object({
+      id: z.number(),
+      title: z.string().trim().optional(),
+      description: z.string().trim().optional(),
+      status: z.string().trim().optional(),
+    }))
     .mutation(async ({ input }) => {
       const { id, ...data } = input;
       
