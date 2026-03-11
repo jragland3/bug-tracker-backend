@@ -5,12 +5,6 @@ import { prisma } from "../../prismaClient";
 import { z } from 'zod';
 import { TRPCError } from "@trpc/server";
 
-const updateBugInput = z.object({
-  id: z.number(),
-  title: z.string().trim().optional(),
-  description: z.string().trim().optional(),
-  status: z.string().trim().optional(),
-})
 
 export const bugRouter = router({
   getBugs: procedure.query(async () => {
